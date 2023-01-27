@@ -29,7 +29,7 @@ export async function signIn(req, res) {
         if (user && checkPassword) {
             const token = uuidV4();
 
-            await db.collection("sessions").insertOne({ userId: user._id, token });
+            await db.collection("sessions").insertOne({ userId: user._id, token, permission: user.permission });
 
             res.send(token);
         } else {
