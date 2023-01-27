@@ -1,5 +1,5 @@
 import { Router } from "express";
-import adminAuth from "../middlewares/adminAuth";
+import adminAuth from "../middlewares/adminAuth.js";
 
 
 
