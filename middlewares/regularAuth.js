@@ -1,4 +1,4 @@
-import db from "../database/db"
+import db from "../database/db.js"
 
 export default function regularAuth() {
     return async (req, res, next) => {
