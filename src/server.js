@@ -12,5 +12,5 @@ server.use(express.json())
 server.use([AuthRouter, ProductsRouter, AdminRouter]);
 
 
-const PORT = 5005;
-server.listen(PORT, () => console.log(`running on the p ${PORT}`))
+const port = process.env.PORT || 5005;
+server.listen(port, () => console.log(`running on the p ${port}`))
