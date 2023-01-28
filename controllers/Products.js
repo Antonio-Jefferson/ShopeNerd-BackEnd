@@ -25,3 +25,17 @@ export async function saveProduct(req, res) {
 //         res.status(500).send("Database error.");
 //     }
 // }
+
+export async function buyProduct(req, res){
+    const {id} = req.body;
+    try{  
+        for(let i = 0; i<id.length;i++){
+            await db.collection("products").updateOne({_id:ObjectId(id[i])}, {$inc: {amount: -1}})
+        }
+        res.sendStatus(204)
+    }catch(err){
+        res.status(500).send(err);
+    }
+    
+
+}
