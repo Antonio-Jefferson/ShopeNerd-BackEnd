@@ -10,6 +10,6 @@ const ProductsRouter = Router();
 
 ProductsRouter.post("/products", adminAuth, validatorSchema(ProductSchema), saveProduct);
 // ProductsRouter.delete("/products/:id", adminAuth, deleteProduct);
-ProductsRouter.post("/products", regularAuth, buyProduct);
+ProductsRouter.put("/products", regularAuth, buyProduct);
 ProductsRouter.get("/products", getProduct);
 export default ProductsRouter;
