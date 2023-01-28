@@ -13,6 +13,15 @@ export async function saveProduct(req, res) {
     }
 }
 
+export async function getProduct(_, res){
+    try{
+        const products = await db.collection("products").find({}).toArray()
+        res.status(200).send(products)
+    } catch(err){
+        res.status(500).send("Database error.");
+    }
+}
+
 
 // export async function deleteProduct(req, res) {
 //     const {id} = req.params;
