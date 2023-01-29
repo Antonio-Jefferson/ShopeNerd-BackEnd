@@ -1,4 +1,5 @@
 // import { ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";
 import db from "../database/db.js";
 
 export async function saveProduct(req, res) {
@@ -36,13 +37,16 @@ export async function getProduct(_, res){
 // }
 
 export async function buyProduct(req, res){
+    
     const {id} = req.body;
     try{  
+
         for(let i = 0; i<id.length;i++){
-            await db.collection("products").updateOne({_id:ObjectId(id[i])}, {$inc: {amount: -1}})
+            db.collection("products").updateOne({_id:ObjectId(id[i])}, {$inc: {amount: -1}})       
         }
-        res.sendStatus(204)
+        res.send()
     }catch(err){
+        console.log(err)
         res.status(500).send(err);
     }
     
