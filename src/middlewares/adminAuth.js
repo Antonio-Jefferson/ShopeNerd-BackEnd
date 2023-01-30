@@ -1,16 +1,17 @@
 import db from "../database/db.js";
 
-export default function adminAuth() {
-    return async (req, res, next) => {
-        const { token } = req.headers;
-        try {
-            const { permission } = await db.collection("sessions").findOne({ token });
-            if (permission !== "admin") return res.status(401).send("Permission denied!");
-        } catch (err) {
-            console.log(err);
-            return res.status(500).send("Database error.");
-        }
+export default async function adminAuth(req, res, next) {
+    const { authorization } = req.headers;
+    const token = authorization?.replace("Bearer ", "");
+    if (!token) return res.status(422).send("informe o token!")
+    try {
+        const session = await db.collection("sessions").findOne({ token });
+        if (!session) return res.status(422).send("Session failed.")
+        if (session.permission !== "admin") return res.status(401).send("Permission denied!");
         next();
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send("Database error.");
     }
 }
 
