@@ -3,14 +3,18 @@ import db from "../database/db.js";
 import { v4 as uuidV4 } from "uuid"
 
 export async function signUp(req, res) {
-    const { name, email, password } = req.body;
+    const { name, email, password, permission } = req.body;
 
     try {
         const emailExists = await db.collection("users").findOne({ email });
         if (emailExists) return res.status(409).send("Email already in use.");
-
         const hashPassword = bcrypt.hashSync(password, 10);
-        await db.collection("users").insertOne({ name, email, password: hashPassword, permission: "customer" });
+
+        if (permission === "admin") {
+            await db.collection("users").insertOne({ name, email, password: hashPassword, permission });
+        } else {
+            await db.collection("users").insertOne({ name, email, password: hashPassword, permission: "customer" });
+        }
 
         res.status(201).send("Created.");
     } catch (err) {
@@ -31,7 +35,7 @@ export async function signIn(req, res) {
 
             await db.collection("sessions").insertOne({ userId: user._id, token, permission: user.permission });
 
-            res.send(token);
+            res.send({ token, name: user.name });
         } else {
             res.status(401).send("Incorrect email or password, login failed.");
         }
